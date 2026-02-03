@@ -38,14 +38,36 @@ class WordServiceTest {
 
     @Test
     void testGetAllWords() {
-        // TODO: Implementar el test para getAllWords
-        
+        // Given
+        List<Word> words = List.of(word1, word2, word3);
+        when(wordRepository.findAllOrdered()).thenReturn(words);
+
+        // When
+        List<WordDTO> result = wordService.getAllWords();
+
+        // Then
+        assertNotNull(result);
+        assertEquals(3, result.size());
+        assertEquals("PROGRAMADOR", result.get(0).getPalabra());
+        assertEquals("COMPUTADORA", result.get(1).getPalabra());
+        assertEquals("TECNOLOGIA", result.get(2).getPalabra());
+        assertEquals(true, result.get(0).getUtilizada());
+        assertEquals(false, result.get(1).getUtilizada());
+        verify(wordRepository, times(1)).findAllOrdered();
     }
 
     @Test
     void testGetAllWords_EmptyList() {
-        // TODO: Implementar el test para getAllWords_EmptyList
-        
+        // Given
+        when(wordRepository.findAllOrdered()).thenReturn(List.of());
+
+        // When
+        List<WordDTO> result = wordService.getAllWords();
+
+        // Then
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        verify(wordRepository, times(1)).findAllOrdered();
     }
 }
 
